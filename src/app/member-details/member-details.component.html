@@ -1,0 +1,146 @@
+<div class="container-fluid col-md-6">
+  <h3 class="text-center lead">Add Member to Racing Team</h3>
+  <br />
+  <!--Template Driven Form or Model Driven Form?-->
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit(memberForm)">
+    <div>
+      <div class="row">
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            placeholder="First Name"
+            formControlName="firstName"
+            [(ngModel)]="member['firstName']"
+            data-test-id="firstName"
+          />
+          <p
+            *ngIf="
+              memberForm.controls['firstName'].invalid &&
+              (memberForm.controls['firstName'].dirty ||
+                memberForm.controls['firstName'].touched)
+            "
+            class="alert alert-danger"
+          >
+            First Name is required!
+          </p>
+        </div>
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            placeholder="Last Name"
+            formControlName="lastName"
+            [(ngModel)]="member['lastName']"
+            data-test-id="lastName"
+          />
+
+          <p
+            *ngIf="
+              memberForm.controls['lastName'].invalid &&
+              (memberForm.controls['lastName'].dirty ||
+                memberForm.controls['lastName'].touched)
+            "
+            class="alert alert-danger"
+          >
+            Last Name is required!
+          </p>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control"
+            id="jobTitle"
+            placeholder="Job Title"
+            formControlName="jobTitle"
+            [(ngModel)]="member['jobTitle']"
+            data-test-id="jobTitle"
+          />
+
+          <p
+            *ngIf="
+              memberForm.controls['jobTitle'].invalid &&
+              (memberForm.controls['jobTitle'].dirty ||
+                memberForm.controls['jobTitle'].touched)
+            "
+            class="alert alert-danger"
+          >
+            job Title is required!
+          </p>
+        </div>
+        <!--We may have to make a service call to get this list-->
+        <select
+          id="team"
+          class="col-md-6 custom-select"
+          formControlName="team"
+          [(ngModel)]="member['team']"
+          data-test-id="team"
+        >
+          <!-- <option *ngIf="team">{{ team }}</option> -->
+          <option [value]="team.teamName" *ngFor="let team of teams">
+            {{ team.teamName }}
+          </option>
+        </select>
+        <div>
+          <small
+            *ngIf="
+              memberForm.controls['team'].invalid &&
+              (memberForm.controls['team'].dirty ||
+                memberForm.controls['team'].touched)
+            "
+            class="alert alert-danger team"
+          >
+            Team is required!
+          </small>
+        </div>
+      </div>
+      <br />
+      <div class="form-group col-md-6">
+        <div class="row">
+          <label id="activeStatus" class="md-check lead">
+            <input
+              type="radio"
+              value="Active"
+              (change)="onItemChange($event.target.value)"
+              formControlName="status"
+              data-test-id="activeStatus"
+            />
+            Active
+          </label>
+          <p *ngIf="!memberForm.controls['status']" class="alert alert-danger">
+            job Title is required!
+          </p>
+          <label class="md-check lead">
+            <input
+              type="radio"
+              value="Inactive"
+              (change)="onItemChange($event.target.value)"
+              formControlName="status"
+              [(ngModel)]="state"
+              data-test-id="inactiveStatus"
+            />
+            Inactive
+          </label>
+          <p *ngIf="!memberForm.controls['status']" class="alert alert-danger">
+            job Title is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--Disable if form is invalid-->
+    <button
+      type="submit"
+      class="btn btn-primary pull-right"
+      [disabled]=" (memberForm.pristine || memberForm.invalid)"
+      data-test-id="submit"
+    >
+      <span *ngIf="update">Update member</span>
+      <span *ngIf="!update">Save member</span>
+    </button>
+  </form>
+</div>
